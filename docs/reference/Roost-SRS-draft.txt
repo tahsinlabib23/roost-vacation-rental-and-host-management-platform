@@ -1,0 +1,611 @@
+CSE470: Software Engineering
+Software Requirements Specification (SRS)
+End-of-Semester Submission Template
+[Fill in every field below. Replace all bracketed instructions with your own content before submission. Delete this instructions line and all other bracketed instruction lines before you submit.]
+Roost-Vacation Rental & Host Management Platform
+Prepared By
+
+Student ID
+Name
+23201481
+Tahsin Uddin Labib
+24141131
+Lotifur Shabbir
+23101350
+Tushit Roy
+23201179
+Tawsiyat Chowdhury Mahin
+
+
+
+Project Information
+
+Section
+10
+Section Faculty
+Sadif Ahmed
+GitHub Repository Link
+https://github.com/TRR-2002/Roost-Vacation-Rental-Host-Management-Platform.git
+
+
+Tech Stack Used
+
+
+
+
+1. Introduction
+1.1 Purpose
+
+This Software Requirements Specification (SRS) document defines the functional and non-functional requirements of Roost, a vacation rental and host management platform. The application aims to provide a convenient and reliable platform where guests can discover and book rental properties and hosts can manage property listings, availability, pricing, reservations, and guest communication. This document outlines the system's requirements, architecture, technology stack, and development plan to guide the design, implementation, and testing of Roost. 
+
+1.2 Scope
+The scope of this project includes the design, development, testing, and deployment of Roost, a vacation rental and host management platform, catering to:
+Guests: Search and filter properties, save favorites to wishlists, verify their identity, book stays, message hosts, and leave reviews.
+
+Hosts: Create listings, manage availability, pricing, and cancellation policies, offer promotional discounts, handle booking requests, coordinate deposits, cleaning, digital check-in, and stay reminders, and track earnings.
+
+Co-Hosts and Property Managers: Help hosts manage listings, reservations, guest messages, and check-ins within the permissions the owner sets.
+
+Administrators: Maintain the amenity catalog, monitor bookings, revenue, and platform activity, and resolve disputes.
+
+This SRS covers the functional and non-functional requirements of Roost, including its architecture, technology stack, constraints, assumptions, and development plan. Physical property maintenance, transportation services and the direct operation of third-party payment systems and smart-lock hardware are outside the scope of the application. 
+
+
+
+
+
+
+2. Overall Description
+2.1 Product Perspective
+Roost is a standalone web application that works as a marketplace between property hosts and guests, similar to Airbnb and Booking.com. It is not a module of an existing system and does not replace a hotel booking system. It gives independent hosts the tools that large platforms provide, such as listing management, calendar control, deposits, and guest messaging, in one place. It connects to outside services for payments, smart-lock access codes, and SMS or email notifications.
+
+[Briefly describe how this application fits into a real-world context (e.g. a standalone product, a module of a larger system). One short paragraph.]
+
+2.2 Product High-Level Summary
+[List the major requirements of the application in one or two sentences each (these will be broken down into features in Section 4).]
+2.3 Users and Characteristics
+[List each type of user/actor of the system (e.g. Customer, Admin) and briefly describe their role.]
+2.4 Operating Environment
+[Describe the platform(s) the application runs on (web browser, Android version, iOS version, desktop OS) and any environment requirements.]
+2.5 Design and Implementation Constraints
+This project follows the constraints defined in the CSE470 Project Outline, including mandatory MVC architecture and the approved tech-stack policy. State your specific choices below.
+[List: (a) the primary tech stack used, (b) the MVC framework/library used and how MVC is structured in your project (Model / View / Controller folders or modules), (c) any AI-backed feature and the FastAPI/AI service used for it, if applicable, (d) any faculty-approved exception.]
+2.6 Assumptions and Dependencies (Optional)
+[List any assumptions made during development (e.g. availability of a third-party API) and external dependencies.]
+3. System Architecture
+3.1 Architectural Overview
+[Insert or describe an MVC architecture diagram showing how the Model, View, and Controller layers are organized in your project, and how they communicate.]
+3.2 Technology Stack
+[List each layer of your stack (frontend, backend, database, hosting/deployment) and the specific technology used for each.]
+3.3 Class Diagram
+[Draw the Class Diagram of your project showing all the classes and relationships necessary to implement your system]
+4. Requirements and Features
+List every requirement and its associated feature(s) below. Per the Project Outline (Section 3.2.1), all CRUD operations on the same entity by the same actor using the same logic count as ONE feature — do not split them. A minimum of 20 features is required.
+[Replace the sample row with your own rows. Add as many rows as needed. Each Feature ID should be unique (F1, F2, F3…) and referenced consistently across this document and your Git commit history.]
+Req. ID
+Requirement
+Feature Description
+Actor
+MVC Components Touched
+Sprint Completed
+Status
+R1
+
+
+F1. Host Property Listing & Multi-Step Setup
+
+Description: Multi-step wizard for hosts to build detailed property profiles, room layouts, bed configurations, and photo galleries.
+
+
+
+
+
+
+
+
+
+
+
+R…
+
+
+F2. Real-Time Calendar Availability & Nightly Pricing Engine
+
+Description: Real-time availability management with custom seasonal rates, minimum-stay rules, and manual calendar blocks.
+
+
+
+
+
+
+
+
+
+
+
+R…
+
+
+F3. Advanced Search & Geographical Filter System
+
+Description: Geo-location search enabling guests to filter properties by dates, capacity, price ranges, and specialized amenities.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F4. Guest Booking Request & Instant-Book Workflow
+
+Description: Supports both manual booking requests and Instant-Book workflows for streamlined guest reservations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F5. Host Booking Approval & Reservation Management
+
+Description: Centralized host dashboard to review pending requests, inspect guest profiles, and accept or decline bookings.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F6. Secure Guest-Host Direct Messaging Hub
+
+Description: Secure host-guest chat hub for pre-arrival coordination, house rule discussions, and real-time stay support.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F7. Damage Deposit & Security Hold Management
+
+Description: Automated pre-authorizations and damage waiver management to safeguard property investments.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F8. Digital Check-In & Access Code Provisioning
+
+Description: Automated delivery of smart-lock access codes and check-in instructions upon booking confirmation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F9. Cleaning & Property Turnover Scheduler
+
+Description: Automated coordination and scheduling tool for cleaning crews during guest check-out and check-in windows.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F10. Two-Way Review and Rating Scorecard
+
+Description: Mutual post-stay review system where guests rate accuracy and hosts rate guest behavior.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F11. Guest Identity Verification Portal
+
+Description: Automated background verification portal supporting government photo ID uploads, email, and phone validation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F12. Host Earnings & Payout Ledger
+
+Description: Financial tracking hub detailing gross earnings, platform fee deductions, net profits, and automated host payouts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F13. Flexible Cancellation Policy Engine
+
+Description: Automated enforcement of tiered cancellation policies (Flexible, Moderate, Strict) and instant refund calculations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F14. Dispute Resolution & Mediation Portal
+
+Description: Formal mediation portal for handling damage claims, guest complaints, and admin-led dispute intervention.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F15. Promotional Coupon & Seasonal Discount Manager
+
+Description: Flexible promotional tool to create weekly, monthly, early-bird, or seasonal discounts to boost occupancy.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F16. Co-Host Management & Permission Delegation
+
+Description: Multi-user permission management allowing property owners to assign custom access roles to co-hosts and managers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F17. Amenity & Safety Feature Taxonomy Management
+
+Description: Standardized administrative catalog for categorizing property amenities, safety gear, and house accessibility options.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F18. Guest Wishlist & Neighborhood Collection System
+
+Description: Personalized travel folders letting guests save, categorize, and share favorite listings for future trips.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F19. Automated Stay Reminder & Notification Engine
+
+Description: Time-based trigger system sending check-in reminders, house guidebooks, and departure guidelines to guests.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F20. Platform Administrator Oversight & Analytics Dashboard
+Description: 
+Central executive dashboard tracking total Gross Merchandise Value (GMV), active inventory, and platform commission revenues.
+
+
+
+
+
+
+
+
+
+
+
+
+
+4.1 Feature Count Summary
+Minimum features required (per Project Outline, Section 7)
+
+
+Total features listed in Section 4 above
+
+
+Total features fully completed (“Done” per Section 7.2 of the Project Outline)
+
+
+
+5. External Interface Requirements (Optional)
+Interface Type
+Description
+User Interface
+
+
+Hardware Interface
+
+
+Software Interface (APIs, third-party services)
+
+
+Communication Interface
+
+
+
+6. Non-Functional Requirements (Optional)
+Category
+Requirement
+Performance
+
+
+Security
+
+
+Usability
+
+
+Reliability / Availability
+
+
+Scalability
+
+
+
+7. Sprint History and Review Ceremony Log
+Record the goals and attainment shared during each weekly sprint review ceremony, per Section 7.1 of the Project Outline.
+Sprint
+Goals Set (Start of Week)
+Attainment Reported (End of Week)
+Features Completed This Sprint
+Sprint 1
+
+
+
+
+
+
+Sprint 2
+
+
+
+
+
+
+Sprint 3
+
+
+
+
+
+
+Sprint 4
+
+
+
+
+
+
+
+
+7.1 Deviations and Lessons Learned
+[Briefly explain any sprint where attainment did not match the planned goals, why it happened, and what was adjusted for the following sprint.]
+8. Testing Summary
+[Briefly describe how each major feature was tested (manual testing steps, sample test cases, or automated tests). A short table or list is acceptable.]
+
+9. AI Tool Usage Disclosure
+Per the Project Outline's Academic Integrity & AI Usage Policy (Section 6), disclose every instance where a generative AI tool was used during development. Leave the table empty (do not delete it) if no AI tool was used.
+Feature / Task
+AI Tool Used
+How It Was Used (be specific)
+I Can Fully Explain This Code (Yes/No)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[By submitting this document, you confirm that you are able to personally explain, modify, and debug every piece of code listed above during your viva.]
+10. Individual Contribution Summary
+[Since each student develops their project individually, summarize your own work: which features you implemented, approximate time spent per sprint, and any challenges you solved independently. If you collaborated with your 4-student group on non-code matters (e.g. idea discussion), state that clearly and distinguish it from your individual implementation work.]
+11. Pre-Submission Checklist
+Checklist Item
+Confirmed (Yes/No)
+The application implements the MVC architecture
+
+
+At least 20 features are listed and each is correctly counted per the granularity rule
+
+
+No forbidden framework (e.g. Django, Flask as primary backend) was used
+
+
+All four sprints' goals and attainment are recorded in Section 7
+
+
+The GitHub repository is up to date and the section faculty is added as a collaborator
+
+
+The AI Usage Disclosure table (Section 10) is complete and honest
+
+
+I can personally explain and defend every feature listed in this document during the viva
+
+
+
+
