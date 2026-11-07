@@ -40,4 +40,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'guest_id');
     }
+
+    public function guestConversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'guest_id');
+    }
+
+    public function hostConversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'host_id');
+    }
+
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
 }
