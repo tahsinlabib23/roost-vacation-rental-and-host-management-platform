@@ -8,6 +8,7 @@
 /storage/framework/sessions/*
 /storage/framework/views/*
 /.env
+/.env.testing
 /.phpunit.cache
 .DS_Store
 Thumbs.db
