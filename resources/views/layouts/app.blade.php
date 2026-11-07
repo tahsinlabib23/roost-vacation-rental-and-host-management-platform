@@ -21,18 +21,18 @@
             <div class="sidebar-context"><span class="context-label">Your space</span><span class="context-name">{{ $isHost ? 'Hosting' : 'Travel' }}</span></div>
 
             <nav class="side-nav" aria-label="Main navigation">
-                <a class="nav-link is-active" href="#overview" aria-current="page">
+                <a class="nav-link{{ request()->routeIs('dashboard') ? ' is-active' : '' }}" href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>
                     <span>Overview</span>
                 </a>
                 @if ($isHost)
-                    <a class="nav-link" href="#properties">
+                    <a class="nav-link" href="{{ route('dashboard') }}#properties">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 10 8.5-6 8.5 6v9.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V10Z"/><path d="M9 20.5v-7h6v7"/></svg>
                         <span>My places</span>
                         @if ($propertyCount > 0)<span class="nav-count">{{ $propertyCount }}</span>@endif
                     </a>
                 @endif
-                <a class="nav-link" href="#reservation-list">
+                <a class="nav-link" href="{{ route('dashboard') }}#reservation-list">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.5v4M16.5 3.5v4M3.5 10h17"/></svg>
                     <span>{{ $isHost ? 'Reservations' : 'My stays' }}</span>
                 </a>
