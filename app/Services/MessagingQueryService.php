@@ -162,6 +162,7 @@ class MessagingQueryService
 
         return [
             'id' => $conversation->id,
+            'url' => route('messages.show', $conversation),
             'property' => [
                 'id' => $conversation->property->id,
                 'title' => $conversation->property->title,

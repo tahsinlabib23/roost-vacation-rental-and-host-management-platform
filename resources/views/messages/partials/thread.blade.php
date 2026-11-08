@@ -15,9 +15,9 @@
         </span>
     </header>
 
-    <div class="message-history" aria-live="polite">
+    <div class="message-history" aria-live="polite" data-message-history>
         @if ($history['has_more'])
-            <a class="load-older-link" href="{{ route('messages.items', ['conversation' => $conversation['id'], 'before_id' => $history['before_id']]) }}">Load older messages</a>
+            <a class="load-older-link" href="{{ route('messages.items', ['conversation' => $conversation['id'], 'before_id' => $history['before_id']]) }}" data-load-older>Load older messages</a>
         @endif
 
         @forelse ($history['data'] as $message)
@@ -30,12 +30,14 @@
         @endforelse
     </div>
 
+    <button class="new-messages-button" type="button" hidden data-new-messages>New messages</button>
+
     @php
         $lastDisplayedIncoming = collect($history['data'])->where('is_mine', false)->max('id');
     @endphp
 
     @if ($lastDisplayedIncoming)
-        <form method="POST" action="{{ route('messages.read', $conversation['id']) }}" class="mark-read-form">
+        <form method="POST" action="{{ route('messages.read', $conversation['id']) }}" class="mark-read-form" data-read-form>
             @csrf
             <input type="hidden" name="through_message_id" value="{{ $lastDisplayedIncoming }}">
             <button type="submit" class="text-button">Mark displayed messages as read</button>

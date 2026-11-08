@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('messages.store', $conversationId) }}" class="message-composer">
+<form method="POST" action="{{ route('messages.store', $conversationId) }}" class="message-composer" data-message-form>
     @csrf
     <input type="hidden" name="client_message_id" value="{{ old('client_message_id', (string) \Illuminate\Support\Str::uuid()) }}">
 
@@ -9,4 +9,5 @@
     </div>
 
     <button class="primary-button" type="submit">Send message</button>
+    <p class="message-form-status" role="status" aria-live="polite" hidden data-form-status></p>
 </form>

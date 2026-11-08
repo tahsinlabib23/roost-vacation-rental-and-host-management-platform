@@ -1,9 +1,27 @@
 @extends('layouts.app')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/messages.css') }}">
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('js/messages.js') }}" defer></script>
+@endpush
+
 @section('title', 'Messages')
 
 @section('content')
-    <div class="messages-page{{ $selectedConversation ? ' has-selected-thread' : '' }}">
+    <div
+        class="messages-page{{ $selectedConversation ? ' has-selected-thread' : '' }}"
+        data-messages-app
+        data-user-id="{{ $user->id }}"
+        data-inbox-url="{{ route('messages.inbox') }}"
+        @if ($selectedConversation)
+            data-conversation-id="{{ $selectedConversation['id'] }}"
+            data-items-url="{{ route('messages.items', $selectedConversation['id']) }}"
+            data-read-url="{{ route('messages.read', $selectedConversation['id']) }}"
+        @endif
+    >
         <header class="page-header messages-header">
             <div>
                 <p class="eyebrow">Guest-host conversations</p>
@@ -34,16 +52,16 @@
         <div class="messages-loading-state" role="status" hidden data-messages-loading>Loading messages…</div>
         <div class="notice notice-error" role="alert" hidden data-messages-failure>Messages could not be loaded. Please try again.</div>
 
+        @unless ($isHost)
+            @include('messages.partials.search')
+
+            @if ($searchResults !== null)
+                @include('messages.partials.search-results', ['results' => $searchResults])
+            @endif
+        @endunless
+
         <div class="messages-workspace">
             <aside class="messages-inbox" aria-label="Conversations and guest search">
-                @unless ($isHost)
-                    @include('messages.partials.search')
-
-                    @if ($searchResults !== null)
-                        @include('messages.partials.search-results', ['results' => $searchResults])
-                    @endif
-                @endunless
-
                 @include('messages.partials.conversation-list', [
                     'conversations' => $inbox,
                     'selectedId' => $selectedConversation['id'] ?? null,

@@ -24,7 +24,7 @@
                         <span class="search-result-host">Hosted by {{ $result['host']['name'] }}</span>
                     </summary>
 
-                    <form method="POST" action="{{ route('messages.conversations.store') }}" class="first-message-form">
+                    <form method="POST" action="{{ route('messages.conversations.store') }}" class="first-message-form" data-message-form data-start-conversation>
                         @csrf
                         <input type="hidden" name="property_id" value="{{ $result['property']['id'] }}">
                         <input type="hidden" name="client_message_id" value="{{ $isSubmittedProperty ? old('client_message_id') : (string) \Illuminate\Support\Str::uuid() }}">
@@ -35,6 +35,7 @@
                         </div>
 
                         <button class="primary-button" type="submit">Send first message</button>
+                        <p class="message-form-status" role="status" aria-live="polite" hidden data-form-status></p>
                     </form>
                 </details>
             @endforeach
