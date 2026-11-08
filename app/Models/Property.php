@@ -20,6 +20,9 @@ class Property extends Model
         'cover_image_url',
         'guest_capacity',
     ];
+    protected $casts = [
+    'amenities' => 'array',
+    ];
 
     protected function casts(): array
     {

@@ -60,3 +60,30 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
+// Add this to the very bottom of routes/web.php
+
+Route::post('/wishlist/{propertyId}', function (\Illuminate\Http\Request $request, $propertyId) {
+    $wishlist = $request->session()->get('wishlist', []);
+
+    if (in_array($propertyId, $wishlist)) {
+        // Remove it if it's already there
+        $wishlist = array_diff($wishlist, [$propertyId]);
+    } else {
+        // Add it if it's not
+        $wishlist[] = $propertyId;
+    }
+
+    $request->session()->put('wishlist', $wishlist);
+
+    return back()->with('status', 'Wishlist updated!');
+})->name('wishlist.toggle');
+
+Route::get('/wishlist', function (\Illuminate\Http\Request $request) {
+    $wishlistIds = $request->session()->get('wishlist', []);
+    
+    // Fetch only the properties that match the IDs in the session
+    $properties = \App\Models\Property::whereIn('id', $wishlistIds)->get();
+    
+    // Note: You'll need to create this view file next!
+    return view('properties.wishlist', compact('properties'));
+});

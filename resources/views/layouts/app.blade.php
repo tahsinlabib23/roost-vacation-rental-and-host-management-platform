@@ -43,6 +43,10 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.5v4M16.5 3.5v4M3.5 10h17"/></svg>
                     <span>{{ $isHost ? 'Reservations' : 'My stays' }}</span>
                 </a>
+                <!-- Add this to your navigation menu -->
+                <a href="/wishlist" class="text-gray-900 hover:text-blue-600 font-medium px-3 py-2 rounded-md">
+                    My Wishlist
+                </a>
             </nav>
 
             <div class="sidebar-note"><span class="note-rule" aria-hidden="true"></span><p>{{ $isHost ? 'The small details make a stay feel like home.' : 'Good trips begin with a place that feels right.' }}</p></div>
