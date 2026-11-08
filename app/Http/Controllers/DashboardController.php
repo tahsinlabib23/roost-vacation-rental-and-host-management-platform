@@ -19,7 +19,6 @@ class DashboardController extends Controller
             $bookings = Booking::query()
                 ->whereHas('property', fn ($query) => $query->where('host_id', $user->id));
 
-            $propertyCount = Property::query()->where('host_id', $user->id)->count();
             $properties = Property::query()
                 ->where('host_id', $user->id)
                 ->latest()
@@ -64,7 +63,6 @@ class DashboardController extends Controller
         } else {
             $bookings = Booking::query()->where('guest_id', $user->id);
 
-            $propertyCount = 0;
             $properties = collect();
             $stats = [
                 [
@@ -115,7 +113,6 @@ class DashboardController extends Controller
             'isHost' => $isHost,
             'stats' => $stats,
             'properties' => $properties,
-            'propertyCount' => $propertyCount,
             'reservations' => $reservations,
             'nextArrival' => $nextArrival,
         ]);
