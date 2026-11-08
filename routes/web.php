@@ -9,6 +9,7 @@ use App\Http\Controllers\Messaging\InboxController;
 use App\Http\Controllers\Messaging\MessageController;
 use App\Http\Controllers\Messaging\ReadReceiptController;
 use App\Http\Middleware\PrivateMessagingResponse;
+use App\Http\Middleware\RequireCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -39,7 +40,7 @@ Route::middleware('auth')->group(function () {
             ->name('messages.search');
         Route::get('/messages/inbox', [InboxController::class, 'poll'])->name('messages.inbox');
         Route::post('/messages/conversations', [ConversationController::class, 'store'])
-            ->middleware('throttle:messaging-send')
+            ->middleware([RequireCsrfToken::class, 'throttle:messaging-send'])
             ->name('messages.conversations.store');
         Route::get('/messages/conversations/{conversation}', [ConversationController::class, 'show'])
             ->whereNumber('conversation')
@@ -49,10 +50,11 @@ Route::middleware('auth')->group(function () {
             ->name('messages.items');
         Route::post('/messages/conversations/{conversation}/items', [MessageController::class, 'store'])
             ->whereNumber('conversation')
-            ->middleware('throttle:messaging-send')
+            ->middleware([RequireCsrfToken::class, 'throttle:messaging-send'])
             ->name('messages.store');
         Route::post('/messages/conversations/{conversation}/read', ReadReceiptController::class)
             ->whereNumber('conversation')
+            ->middleware(RequireCsrfToken::class)
             ->name('messages.read');
     });
 
