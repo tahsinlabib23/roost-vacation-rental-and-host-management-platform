@@ -32,6 +32,10 @@
                         @if ($propertyCount > 0)<span class="nav-count">{{ $propertyCount }}</span>@endif
                     </a>
                 @endif
+                <a class="nav-link{{ request()->routeIs('messages.*') ? ' is-active' : '' }}" href="{{ route('messages.index') }}" @if (request()->routeIs('messages.*')) aria-current="page" @endif>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v11H9l-5 3v-14Z"/><path d="M8 10h8M8 13h5"/></svg>
+                    <span>Messages</span>
+                </a>
                 <a class="nav-link" href="{{ route('dashboard') }}#reservation-list">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7.5 3.5v4M16.5 3.5v4M3.5 10h17"/></svg>
                     <span>{{ $isHost ? 'Reservations' : 'My stays' }}</span>
