@@ -14,4 +14,6 @@ All demo users use the local-only password `RoostDemo123!`:
 - `f6.guest2@example.test` and `f6.host2@example.test` have no conversation, so they demonstrate the first-contact flow.
 - Published and draft properties are included so guest search can verify that drafts never appear.
 
+Messaging uses one conversation per guest-host pair. Searching another property owned by a host opens the pair's existing conversation; the stored property remains the context from which that conversation originally started.
+
 The seeder only updates records identified by the reserved `f6.*@example.test` addresses and stable demo property titles. Rerunning it does not multiply conversations or messages. These credentials and records must never be used as production data.

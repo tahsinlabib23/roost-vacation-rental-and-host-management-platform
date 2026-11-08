@@ -19,7 +19,7 @@
                             <strong data-conversation-name>{{ $conversation['counterpart']['name'] }}</strong>
                             @if ($conversation['unread_count'] > 0)<span class="conversation-unread" data-conversation-unread>{{ $conversation['unread_count'] }}</span>@endif
                         </span>
-                        <small data-conversation-property>{{ $conversation['property']['title'] }}</small>
+                        <small data-conversation-property>Started from: {{ $conversation['property']['title'] }}</small>
                         <span data-conversation-preview>{{ \Illuminate\Support\Str::limit($conversation['latest_message']['body'] ?? 'Conversation started', 72) }}</span>
                     </span>
                 </a>

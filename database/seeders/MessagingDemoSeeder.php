@@ -25,7 +25,7 @@ class MessagingDemoSeeder extends Seeder
 
         $gardenCottage = $this->demoProperty($hostOne, 'Maya Garden Cottage', 'Dhanmondi, Dhaka', 'published');
         $this->demoProperty($hostOne, 'Maya Garden Loft', 'Banani, Dhaka', 'published');
-        $riverHouse = $this->demoProperty($hostTwo, 'Nadia River House', 'Uttara, Dhaka', 'published');
+        $this->demoProperty($hostTwo, 'Nadia River House', 'Uttara, Dhaka', 'published');
         $this->demoProperty($hostTwo, 'Nadia Hidden Cabin', 'Savar, Dhaka', 'draft');
 
         $messaging = app(MessagingService::class);
@@ -54,7 +54,6 @@ class MessagingDemoSeeder extends Seeder
         Conversation::query()
             ->where('guest_id', $guestTwo->id)
             ->where('host_id', $hostTwo->id)
-            ->where('property_id', $riverHouse->id)
             ->delete();
     }
 

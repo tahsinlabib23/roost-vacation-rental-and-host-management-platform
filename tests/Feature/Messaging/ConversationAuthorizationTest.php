@@ -47,7 +47,7 @@ class ConversationAuthorizationTest extends TestCase
             ->assertJsonValidationErrors(['sender_id', 'host_id', 'recipient_id']);
     }
 
-    public function test_ownership_transfer_keeps_history_private_and_old_thread_read_only(): void
+    public function test_ownership_transfer_keeps_history_private_and_original_pair_connected(): void
     {
         [$guest, $oldHost, $property, $conversation] = $this->fixture('Transfer');
         $this->message($conversation, $guest, 'History before transfer');
@@ -57,8 +57,8 @@ class ConversationAuthorizationTest extends TestCase
         $this->actingAs($newHost)->get(route('messages.show', $conversation))->assertForbidden();
         $this->actingAs($guest)->get(route('messages.show', $conversation))->assertOk();
         $this->actingAs($oldHost)->postJson(route('messages.store', $conversation), [
-            'body' => 'Blocked old thread send',
+            'body' => 'Continue the existing conversation',
             'client_message_id' => (string) Str::uuid(),
-        ])->assertForbidden();
+        ])->assertCreated();
     }
 }

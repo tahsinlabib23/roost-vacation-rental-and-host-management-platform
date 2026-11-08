@@ -39,13 +39,20 @@ class MessagingQueryService
             ->through(fn (Conversation $conversation) => $this->conversationSummary($conversation, $user));
     }
 
-    public function searchHosts(string $hostName, string $propertyName): LengthAwarePaginator
+    public function searchHosts(User $guest, string $hostName, string $propertyName): LengthAwarePaginator
     {
         $hostPattern = '%'.$this->escapeLikeLiteral($hostName).'%';
         $propertyPattern = '%'.$this->escapeLikeLiteral($propertyName).'%';
 
         return Property::query()
             ->select(['id', 'host_id', 'title', 'location'])
+            ->addSelect([
+                'existing_conversation_id' => Conversation::query()
+                    ->select('id')
+                    ->whereColumn('host_id', 'properties.host_id')
+                    ->where('guest_id', $guest->id)
+                    ->limit(1),
+            ])
             ->where('status', 'published')
             ->whereRaw("properties.title LIKE ? ESCAPE '!'", [$propertyPattern])
             ->whereHas('host', fn ($query) => $query
@@ -66,6 +73,9 @@ class MessagingQueryService
                     'id' => $property->host->id,
                     'name' => $property->host->name,
                 ],
+                'existing_conversation_url' => $property->existing_conversation_id
+                    ? route('messages.show', $property->existing_conversation_id)
+                    : null,
             ]);
     }
 

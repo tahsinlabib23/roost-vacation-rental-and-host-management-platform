@@ -11,7 +11,7 @@
         <span class="avatar" aria-hidden="true">{{ mb_substr($conversation['counterpart']['name'], 0, 1) }}</span>
         <span>
             <h2>{{ $conversation['counterpart']['name'] }}</h2>
-            <p>{{ $conversation['property']['title'] }}</p>
+            <p>Started from: {{ $conversation['property']['title'] }}</p>
         </span>
     </header>
 

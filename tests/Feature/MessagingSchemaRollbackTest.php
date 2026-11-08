@@ -13,8 +13,10 @@ class MessagingSchemaRollbackTest extends TestCase
 
         $conversationMigration = require database_path('migrations/2026_11_08_040021_create_conversations_table.php');
         $messageMigration = require database_path('migrations/2026_11_08_040023_create_messages_table.php');
+        $pairMigration = require database_path('migrations/2026_11_08_140000_make_conversations_unique_per_guest_host.php');
 
         try {
+            $pairMigration->down();
             $messageMigration->down();
             $conversationMigration->down();
 
@@ -30,6 +32,8 @@ class MessagingSchemaRollbackTest extends TestCase
             if (! Schema::hasTable('messages')) {
                 $messageMigration->up();
             }
+
+            $pairMigration->up();
         }
     }
 }

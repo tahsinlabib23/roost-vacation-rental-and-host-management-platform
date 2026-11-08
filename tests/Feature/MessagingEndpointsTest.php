@@ -73,13 +73,14 @@ class MessagingEndpointsTest extends TestCase
         $guest = $this->createUser('Inbox Guest', 'guest');
         $otherGuest = $this->createUser('Other Inbox Guest', 'guest');
         $host = $this->createUser('Inbox Host', 'host');
+        $secondHost = $this->createUser('Second Inbox Host', 'host');
         $firstProperty = $this->createProperty($host, 'First Inbox Place');
-        $secondProperty = $this->createProperty($host, 'Second Inbox Place');
+        $secondProperty = $this->createProperty($secondHost, 'Second Inbox Place');
         $first = $this->createConversation($firstProperty, $guest, $host);
-        $second = $this->createConversation($secondProperty, $guest, $host);
+        $second = $this->createConversation($secondProperty, $guest, $secondHost);
         $outsider = $this->createConversation($firstProperty, $otherGuest, $host);
         $this->createMessage($first, $host, 'Older unread', now()->subMinute());
-        $this->createMessage($second, $host, 'Newest unread', now());
+        $this->createMessage($second, $secondHost, 'Newest unread', now());
         $this->createMessage($outsider, $host, 'Private outsider message', now()->addMinute());
 
         $response = $this->actingAs($guest)->getJson(route('messages.inbox'));

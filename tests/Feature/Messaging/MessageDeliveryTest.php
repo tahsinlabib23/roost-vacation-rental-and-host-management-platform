@@ -14,7 +14,7 @@ class MessageDeliveryTest extends TestCase
 {
     use BuildsMessagingFixtures, RefreshDatabase;
 
-    public function test_repeat_contact_reuses_thread_but_different_properties_create_separate_threads(): void
+    public function test_same_guest_and_host_reuse_one_thread_across_different_properties(): void
     {
         $service = app(MessagingService::class);
         $guest = $this->user('Delivery Guest', 'guest');
@@ -24,11 +24,13 @@ class MessageDeliveryTest extends TestCase
 
         $first = $service->startConversation($guest, $firstProperty, 'First', (string) Str::uuid());
         $repeat = $service->startConversation($guest, $firstProperty, 'Repeat', (string) Str::uuid());
-        $separate = $service->startConversation($guest, $secondProperty, 'Separate', (string) Str::uuid());
+        $otherPropertyMessage = $service->startConversation($guest, $secondProperty, 'Other property', (string) Str::uuid());
 
         $this->assertSame($first->conversation_id, $repeat->conversation_id);
-        $this->assertNotSame($first->conversation_id, $separate->conversation_id);
-        $this->assertDatabaseCount('conversations', 2);
+        $this->assertSame($first->conversation_id, $otherPropertyMessage->conversation_id);
+        $this->assertSame($firstProperty->id, $first->conversation->fresh()->property_id);
+        $this->assertDatabaseCount('conversations', 1);
+        $this->assertDatabaseCount('messages', 3);
     }
 
     public function test_message_length_boundaries_include_two_thousand_unicode_characters(): void

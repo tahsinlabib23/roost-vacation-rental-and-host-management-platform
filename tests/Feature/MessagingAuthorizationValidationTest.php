@@ -103,7 +103,7 @@ class MessagingAuthorizationValidationTest extends TestCase
         ])->assertUnprocessable()->assertJsonValidationErrors('property_id');
     }
 
-    public function test_send_request_rejects_outsiders_invalid_payloads_and_owner_changes(): void
+    public function test_send_request_rejects_outsiders_and_invalid_payloads_but_survives_owner_changes(): void
     {
         [$guest, $host, $property, $conversation] = $this->conversationFixture();
         $outsider = $this->createUser('Send Outsider', 'guest');
@@ -124,18 +124,19 @@ class MessagingAuthorizationValidationTest extends TestCase
         $property->update(['host_id' => $newHost->id]);
 
         $this->actingAs($guest)->postJson("/_f6-validation/send/{$conversation->id}", [
-            'body' => 'Blocked after owner transfer',
+            'body' => 'Continue after owner transfer',
             'client_message_id' => (string) Str::uuid(),
-        ])->assertForbidden();
+        ])->assertOk();
     }
 
     public function test_read_request_only_accepts_a_message_from_the_selected_conversation(): void
     {
         [$guest, $host, , $conversation] = $this->conversationFixture();
         $message = $this->createMessage($conversation, $host, 'Selected thread message');
-        $otherProperty = $this->createProperty($host, 'Other Validation Place');
-        $otherConversation = $this->createConversation($otherProperty, $guest, $host);
-        $otherMessage = $this->createMessage($otherConversation, $host, 'Other thread message');
+        $otherHost = $this->createUser('Other Validation Host', 'host');
+        $otherProperty = $this->createProperty($otherHost, 'Other Validation Place');
+        $otherConversation = $this->createConversation($otherProperty, $guest, $otherHost);
+        $otherMessage = $this->createMessage($otherConversation, $otherHost, 'Other thread message');
 
         $this->actingAs($guest)->postJson("/_f6-validation/read/{$conversation->id}", [
             'through_message_id' => $message->id,

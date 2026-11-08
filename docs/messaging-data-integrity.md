@@ -5,3 +5,5 @@ Conversation history is protected from accidental deletion. A property, guest, h
 Future account-deletion and property-deletion features must define an explicit archive, retention, or conversation-deletion workflow before attempting a hard delete. Hiding or unpublishing a property is safe because it does not delete the property record or its conversation history.
 
 Participant foreign keys must always be derived by application code. Request data must never be mass-assigned into `property_id`, `guest_id`, `host_id`, `conversation_id`, or `sender_id`.
+
+Each guest and host pair has exactly one conversation, enforced by a database unique constraint on `guest_id` and `host_id`. The conversation's `property_id` records only the property from which the guest first contacted that host. Searching another published property owned by the same host opens the existing conversation instead of creating another one.

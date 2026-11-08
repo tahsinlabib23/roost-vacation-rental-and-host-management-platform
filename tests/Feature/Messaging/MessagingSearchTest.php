@@ -68,4 +68,30 @@ class MessagingSearchTest extends TestCase
             'property_name' => 'Place',
         ]))->assertForbidden();
     }
+
+    public function test_searching_another_property_opens_the_existing_guest_host_conversation(): void
+    {
+        $guest = $this->user('Returning Search Guest', 'guest');
+        $host = $this->user('Returning Search Host', 'host');
+        $firstProperty = $this->property($host, 'Original Search Place');
+        $otherProperty = $this->property($host, 'Different Search Place');
+        $conversation = $this->conversation($firstProperty, $guest, $host);
+
+        $parameters = [
+            'host_name' => 'Returning Search Host',
+            'property_name' => 'Different Search Place',
+        ];
+
+        $this->actingAs($guest)->getJson(route('messages.search', $parameters))
+            ->assertOk()
+            ->assertJsonPath('data.0.property.id', $otherProperty->id)
+            ->assertJsonPath('data.0.existing_conversation_url', route('messages.show', $conversation));
+
+        $this->actingAs($guest)->get(route('messages.search', $parameters))
+            ->assertOk()
+            ->assertSee('You already have a conversation with this host.')
+            ->assertSee('Continue conversation')
+            ->assertSee('href="'.route('messages.show', $conversation).'"', false)
+            ->assertDontSee('Send first message');
+    }
 }

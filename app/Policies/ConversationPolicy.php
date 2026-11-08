@@ -19,8 +19,7 @@ class ConversationPolicy
 
     public function send(User $user, Conversation $conversation): bool
     {
-        return $this->view($user, $conversation)
-            && $conversation->property()->where('host_id', $conversation->host_id)->exists();
+        return $this->view($user, $conversation);
     }
 
     public function markRead(User $user, Conversation $conversation): bool

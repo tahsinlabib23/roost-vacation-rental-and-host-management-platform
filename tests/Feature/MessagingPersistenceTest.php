@@ -38,9 +38,10 @@ class MessagingPersistenceTest extends TestCase
     public function test_participant_scope_is_grouped_with_later_filters(): void
     {
         [$guest, $host, $firstProperty] = $this->participantsAndProperty();
-        $secondProperty = $this->createProperty($host, 'Second Place');
+        $secondHost = $this->createUser('Second Persistence Host', 'host');
+        $secondProperty = $this->createProperty($secondHost, 'Second Place');
         $expected = $this->createConversation($firstProperty, $guest, $host);
-        $this->createConversation($secondProperty, $guest, $host);
+        $this->createConversation($secondProperty, $guest, $secondHost);
 
         $results = Conversation::query()
             ->forParticipant($guest->id)
@@ -51,13 +52,14 @@ class MessagingPersistenceTest extends TestCase
         $this->assertTrue($results->sole()->is($expected));
     }
 
-    public function test_duplicate_property_guest_host_conversation_is_rejected(): void
+    public function test_duplicate_guest_host_conversation_is_rejected_across_properties(): void
     {
         [$guest, $host, $property] = $this->participantsAndProperty();
+        $otherProperty = $this->createProperty($host, 'Other Property For Same Pair');
         $this->createConversation($property, $guest, $host);
 
         $this->expectException(QueryException::class);
-        $this->createConversation($property, $guest, $host);
+        $this->createConversation($otherProperty, $guest, $host);
     }
 
     public function test_deleting_a_conversation_cascades_to_its_messages(): void

@@ -27,10 +27,11 @@ class ReadReceiptTest extends TestCase
 
     public function test_wrong_conversation_cursor_is_rejected(): void
     {
-        [$guest, $host, , $conversation] = $this->fixture('Cursor One');
-        $otherProperty = $this->property($host, 'Cursor Other Place');
-        $other = $this->conversation($otherProperty, $guest, $host);
-        $otherMessage = $this->message($other, $host, 'Wrong cursor');
+        [$guest, , , $conversation] = $this->fixture('Cursor One');
+        $otherHost = $this->user('Cursor Other Host', 'host');
+        $otherProperty = $this->property($otherHost, 'Cursor Other Place');
+        $other = $this->conversation($otherProperty, $guest, $otherHost);
+        $otherMessage = $this->message($other, $otherHost, 'Wrong cursor');
 
         $this->actingAs($guest)->postJson(route('messages.read', $conversation), [
             'through_message_id' => $otherMessage->id,

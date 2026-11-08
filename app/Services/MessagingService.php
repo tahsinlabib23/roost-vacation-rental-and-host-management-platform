@@ -26,6 +26,14 @@ class MessagingService
         }
 
         return DB::transaction(function () use ($guest, $property, $body, $clientMessageId) {
+            // Serialize conversation starts for this guest so simultaneous
+            // searches cannot create two conversations with the same host.
+            $lockedGuest = User::query()->lockForUpdate()->findOrFail($guest->id);
+
+            if ($lockedGuest->role !== 'guest') {
+                throw new AuthorizationException;
+            }
+
             $lockedProperty = Property::query()
                 ->with('host')
                 ->lockForUpdate()
@@ -38,15 +46,15 @@ class MessagingService
             }
 
             $conversation = Conversation::query()
-                ->where('property_id', $lockedProperty->id)
-                ->where('guest_id', $guest->id)
+                ->where('guest_id', $lockedGuest->id)
                 ->where('host_id', $lockedProperty->host_id)
+                ->lockForUpdate()
                 ->first();
 
             if (! $conversation) {
                 $conversation = new Conversation;
                 $conversation->property()->associate($lockedProperty);
-                $conversation->guest()->associate($guest);
+                $conversation->guest()->associate($lockedGuest);
                 $conversation->host()->associate($lockedProperty->host);
                 $conversation->save();
             }

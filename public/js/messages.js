@@ -215,7 +215,7 @@ if (messagesApp) {
 
         if (avatar) avatar.textContent = conversation.counterpart.name.slice(0, 1);
         if (name) name.textContent = conversation.counterpart.name;
-        if (property) property.textContent = conversation.property.title;
+        if (property) property.textContent = `Started from: ${conversation.property.title}`;
         if (preview) preview.textContent = conversation.latest_message?.body || 'Conversation started';
 
         if (conversation.unread_count > 0) {

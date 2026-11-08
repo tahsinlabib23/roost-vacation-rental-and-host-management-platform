@@ -83,20 +83,19 @@ class MessagingServiceTest extends TestCase
         $this->service->startConversation($guest, $property, 'Changed body', $token);
     }
 
-    public function test_retry_token_cannot_be_reused_in_another_conversation(): void
+    public function test_retry_from_another_property_of_same_host_resolves_in_same_conversation(): void
     {
         [$guest, $host, $property] = $this->participantsAndProperty();
         $secondProperty = $this->createProperty($host, 'Second Retry Place');
         $token = (string) Str::uuid();
-        $this->service->startConversation($guest, $property, 'Original thread', $token);
+        $original = $this->service->startConversation($guest, $property, 'Original thread', $token);
+        $retry = $this->service->startConversation($guest, $secondProperty, 'Original thread', $token);
 
-        try {
-            $this->service->startConversation($guest, $secondProperty, 'Original thread', $token);
-            $this->fail('Reusing a retry token in another conversation should conflict.');
-        } catch (MessageConflictException) {
-            $this->assertDatabaseCount('conversations', 1);
-            $this->assertDatabaseCount('messages', 1);
-        }
+        $this->assertSame($original->id, $retry->id);
+        $this->assertSame($original->conversation_id, $retry->conversation_id);
+        $this->assertSame($property->id, $retry->conversation->property_id);
+        $this->assertDatabaseCount('conversations', 1);
+        $this->assertDatabaseCount('messages', 1);
     }
 
     public function test_existing_participants_can_send_after_property_is_unpublished(): void
@@ -116,7 +115,7 @@ class MessagingServiceTest extends TestCase
         $this->assertDatabaseCount('messages', 2);
     }
 
-    public function test_owner_change_makes_old_conversation_read_only_and_new_owner_inherits_nothing(): void
+    public function test_owner_change_keeps_people_connected_and_new_owner_inherits_nothing(): void
     {
         [$guest, $oldHost, $property] = $this->participantsAndProperty();
         $first = $this->service->startConversation($guest, $property, 'Before transfer', (string) Str::uuid());
@@ -127,16 +126,17 @@ class MessagingServiceTest extends TestCase
         $this->assertTrue($oldHost->can('view', $conversation));
         $this->assertTrue($guest->can('poll', $conversation));
         $this->assertTrue($guest->can('markRead', $conversation));
-        $this->assertFalse($oldHost->can('send', $conversation));
-        $this->assertFalse($guest->can('send', $conversation));
+        $this->assertTrue($oldHost->can('send', $conversation));
+        $this->assertTrue($guest->can('send', $conversation));
         $this->assertFalse($newHost->can('view', $conversation));
 
-        try {
-            $this->service->sendMessage($guest, $conversation, 'Blocked after transfer', (string) Str::uuid());
-            $this->fail('Sending to a transferred conversation should be forbidden.');
-        } catch (AuthorizationException) {
-            $this->assertDatabaseCount('messages', 1);
-        }
+        $continuedMessage = $this->service->sendMessage(
+            $guest,
+            $conversation,
+            'Still speaking with the original host',
+            (string) Str::uuid(),
+        );
+        $this->assertSame($conversation->id, $continuedMessage->conversation_id);
 
         $newThreadMessage = $this->service->startConversation(
             $guest,

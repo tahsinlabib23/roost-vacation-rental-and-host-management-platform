@@ -13,7 +13,11 @@ class HostSearchController extends Controller
     public function __invoke(SearchHostsRequest $request, MessagingQueryService $queries): JsonResponse|View
     {
         $validated = $request->validated();
-        $results = $queries->searchHosts($validated['host_name'], $validated['property_name']);
+        $results = $queries->searchHosts(
+            $request->user(),
+            $validated['host_name'],
+            $validated['property_name'],
+        );
 
         if ($request->expectsJson()) {
             return response()->json($queries->paginatorPayload($results));
